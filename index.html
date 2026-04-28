@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ukubona LLC · WHO India</title>
+<meta name="description" content="Ukubona LLC — WHO India · AI Tools for Literature Review">
+<meta property="og:title" content="Ukubona LLC · WHO India">
+<meta property="og:description" content="Ukubona LLC — WHO India · AI Tools for Literature Review">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://abikesa.github.io/favicon/assets/favicon-light.ico" />
+    <link rel="icon" href="https://abikesa.github.io/favicon/assets/favicon-dark.ico"
+          media="(prefers-color-scheme: dark)" />
+    <link rel="preload" href="https://abikesa.github.io/logos/assets/ukubona-light.png" as="image" />
+    <link rel="preload" href="https://abikesa.github.io/logos/assets/ukubona-dark.png" as="image" />
+
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:    #0f0e0d;
+    --ink2:   #3a3630;
+    --ink3:   #7a7268;
+    --ink4:   #b0a898;
+    --paper:  #faf8f4;
+    --paper2: #f0ece4;
+    --border: #d8d0c0;
+    --gold:   #b8860b;
+    --gold2:  #d4a017;
+    --blue:   #1a3a6b;
+    --bar-h:  48px;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--paper);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+  }
+
+  /* ── TOP BAR ── */
+  #topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--bar-h);
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .bar-left {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .bar-brand {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--gold2);
+    letter-spacing: 0.01em;
+    text-decoration: none;
+  }
+
+  .bar-sep {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 0.05em;
+  }
+
+  .bar-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.38);
+    white-space: nowrap;
+  }
+
+  .bar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .bar-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #2ecc71;
+    flex-shrink: 0;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+  }
+
+  .bar-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .bar-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .bar-link:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.07);
+  }
+
+  /* ── LOADER ── */
+  #loader {
+    position: fixed;
+    top: var(--bar-h); left: 0; right: 0; bottom: 0;
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    z-index: 50;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  #loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /*
+   * FIX: wrap wordmark + subtitle in a flex-column block.
+   * The old code had .loader-sub with margin-top: -1.4rem which
+   * pulled it up into the wordmark text. Now they live in a
+   * shared container with a positive gap — clean separation.
+   */
+  .loader-wordmark-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .loader-wordmark {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .loader-wordmark em {
+    font-style: italic;
+    color: var(--gold2);
+  }
+
+  .loader-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink4);
+    line-height: 1;
+    /* no negative margin — subtitle sits cleanly below wordmark */
+  }
+
+  /* animated progress track */
+  .loader-track {
+    width: 220px;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+  .loader-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    border-radius: 1px;
+    animation: load 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes load {
+    0%   { width: 0%; }
+    40%  { width: 65%; }
+    80%  { width: 88%; }
+    100% { width: 100%; }
+  }
+
+  .loader-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--ink4);
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .loader-note-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold2);
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  /* ── IFRAME ── */
+  #frame-wrap {
+    position: fixed;
+    top: var(--bar-h); left: 0; right: 0; bottom: 0;
+  }
+
+  #app-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    background: var(--paper);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 540px) {
+    .bar-status, .bar-sep { display: none; }
+    .bar-tag { font-size: 9px; letter-spacing: 0.08em; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div id="topbar">
+  <div class="bar-left">
+    <a class="bar-brand" href="https://ukb-ai-tools.onrender.com/" target="_blank" rel="noopener">Ukubona</a>
+    <span class="bar-sep">·</span>
+    <span class="bar-tag">WHO India · AI Tools for Literature Review</span>
+  </div>
+  <div class="bar-right">
+    <div class="bar-dot" id="status-dot"></div>
+    <span class="bar-status" id="status-text">Connecting…</span>
+    <a class="bar-link" href="https://ukb-ai-tools.onrender.com/" target="_blank" rel="noopener">Open ↗</a>
+  </div>
+</div>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <div class="loader-wordmark-block">
+    <div class="loader-wordmark">Uku<em>bona</em></div>
+    <div class="loader-sub">World Health Organization · India</div>
+  </div>
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+  <div class="loader-note">
+    <div class="loader-note-dot"></div>
+    Loading sessions and tools…
+  </div>
+</div>
+
+<!-- APP IFRAME -->
+<div id="frame-wrap">
+  <iframe
+    id="app-frame"
+    src="https://ukb-ai-tools.onrender.com/"
+    title="AI Tools for Literature Review"
+    allow="fullscreen"
+    loading="eager"
+  ></iframe>
+</div>
+
+<script>
+  const frame  = document.getElementById('app-frame');
+  const loader = document.getElementById('loader');
+  const dot    = document.getElementById('status-dot');
+  const status = document.getElementById('status-text');
+
+  let frameReady = false;
+  let minTimeDone = false;
+
+  function tryHideLoader() {
+    if (frameReady && minTimeDone) {
+      loader.classList.add('hidden');
+      dot.style.background = '#2ecc71';
+      status.textContent = 'Live';
+    }
+  }
+
+  setTimeout(() => { minTimeDone = true; tryHideLoader(); }, 1400);
+
+  frame.addEventListener('load', () => {
+    frameReady = true;
+    tryHideLoader();
+  });
+
+  // Fallback — hide after 6s if iframe never fires load (cross-origin)
+  setTimeout(() => {
+    frameReady = true;
+    tryHideLoader();
+  }, 6000);
+
+  // Turn amber while still waiting
+  setTimeout(() => {
+    if (!frameReady) {
+      dot.style.background = '#f39c12';
+      status.textContent = 'Loading…';
+    }
+  }, 2000);
+</script>
+</body>
+</html>
