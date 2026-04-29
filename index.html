@@ -203,7 +203,7 @@
     height: 100%;
     background: linear-gradient(90deg, var(--gold), var(--gold2));
     border-radius: 1px;
-    animation: load 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation: load 8.0s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   }
   @keyframes load {
     0%   { width: 0%; }
@@ -313,7 +313,7 @@
     }
   }
 
-  setTimeout(() => { minTimeDone = true; tryHideLoader(); }, 3000);
+  setTimeout(() => { minTimeDone = true; tryHideLoader(); }, 8000);
 
   frame.addEventListener('load', () => {
     frameReady = true;
